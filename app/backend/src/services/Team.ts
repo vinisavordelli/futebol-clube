@@ -9,4 +9,13 @@ export default class Team {
       console.log(err);
     }
   }
+
+  static async getById(id: number | string) {
+    try {
+      const result = await TeamModel.findByPk(id);
+      return result;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

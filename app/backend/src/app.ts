@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import LoginRoutes from './routes/Login';
+import TeamsRoutes from './routes/Teams';
 
 class App {
   public app: express.Express;
@@ -26,6 +27,7 @@ class App {
     this.app.use(accessControl);
 
     this.app.use(LoginRoutes);
+    this.app.use(TeamsRoutes);
     // ...
   }
 
