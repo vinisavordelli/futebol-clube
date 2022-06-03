@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import LoginRoutes from './routes/Login';
 import TeamsRoutes from './routes/Teams';
+import MatchesRoutes from './routes/Matches';
 
 class App {
   public app: express.Express;
@@ -28,6 +29,8 @@ class App {
 
     this.app.use(LoginRoutes);
     this.app.use(TeamsRoutes);
+    this.app.use(MatchesRoutes);
+
     // ...
   }
 

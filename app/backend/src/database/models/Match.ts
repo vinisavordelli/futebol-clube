@@ -2,11 +2,19 @@ import { Model, DataTypes } from 'sequelize';
 import db from '.';
 
 export default class Matches extends Model {
-  homeTeam: number;
-  homeTeamGoals: number;
-  awayTeam: number;
-  awayTeamGoals: number;
-  inProgress: number;
+  id!: number;
+  homeTeam!: number;
+  homeTeamGoals!: number;
+  awayTeam!: number;
+  awayTeamGoals!: number;
+  inProgress!: number;
+  teamHome?: {
+    teamName: string,
+  };
+
+  teamAway?: {
+    teamName: string,
+  };
 }
 
 Matches.init({
