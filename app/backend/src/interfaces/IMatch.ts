@@ -1,4 +1,4 @@
-export default interface IMatch {
+export interface IMatch {
   id?:number;
   homeTeam: number;
   homeTeamGoals: number;
@@ -9,6 +9,15 @@ export default interface IMatch {
     teamName: string,
   };
   teamAway?: {
+    teamName: string,
+  };
+}
+
+export interface ITeamsMatch extends IMatch {
+  teamHome: {
+    teamName: string,
+  };
+  teamAway: {
     teamName: string,
   };
 }
