@@ -20,4 +20,13 @@ export default class Match {
       console.log(err);
     }
   }
+
+  static async filterByProgress(req:Request, res: Response, _next: NextFunction) {
+    try {
+      const result = await MatchService.filterByProgress(req.params.progress === 'true');
+      return res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
