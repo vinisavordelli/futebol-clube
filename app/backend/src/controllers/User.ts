@@ -7,7 +7,7 @@ export default class UserController {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
           message: 'All fields must be filled',
         });
       }
@@ -20,6 +20,21 @@ export default class UserController {
       }
 
       return res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  static async validate(req: Request, res: Response, _next: NextFunction) {
+    try {
+      const { authorization } = req.headers;
+      const response = await UserService.validate(authorization as string);
+      if (!response) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+          message: 'Invalid token',
+        });
+      }
+      return res.status(StatusCodes.OK).json(response);
     } catch (err) {
       console.log(err);
     }
