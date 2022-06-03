@@ -3,9 +3,14 @@ import { StatusCodes } from 'http-status-codes';
 import MatchService from '../services/Match';
 
 export default class Match {
-  static async getAll(_req:Request, res: Response, _next: NextFunction) {
+  static async getAll(req:Request, res: Response, _next: NextFunction) {
     try {
-      const result = await MatchService.getAll();
+      const { inProgress } = req.query;
+      let result;
+      if (inProgress) {
+        result = await MatchService.filterByProgress(inProgress === 'true');
+      }
+      result = await MatchService.getAll();
       return res.status(StatusCodes.OK).json(result);
     } catch (err) {
       console.log(err);
@@ -15,15 +20,6 @@ export default class Match {
   static async getById(req:Request, res: Response, _next: NextFunction) {
     try {
       const result = await MatchService.getById(req.params.id);
-      return res.status(StatusCodes.OK).json(result);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  static async filterByProgress(req:Request, res: Response, _next: NextFunction) {
-    try {
-      const result = await MatchService.filterByProgress(req.params.progress === 'true');
       return res.status(StatusCodes.OK).json(result);
     } catch (err) {
       console.log(err);

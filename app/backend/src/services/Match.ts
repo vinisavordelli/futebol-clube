@@ -1,4 +1,4 @@
-import { ITeamsMatch, IMatch } from '../interfaces/IMatch';
+import { ITeamsMatch } from '../interfaces/IMatch';
 import MatchModel from '../database/models/Match';
 import TeamModel from '../database/models/Team';
 
@@ -25,7 +25,7 @@ export default class Match {
     }
   }
 
-  static async filterByProgress(progress:boolean):Promise<IMatch[] | undefined> {
+  static async filterByProgress(progress:boolean):Promise<ITeamsMatch[] | undefined> {
     const inProgress = progress === true ? 1 : 0;
     const result = await MatchModel.findAll({
       where: { inProgress },
@@ -40,7 +40,7 @@ export default class Match {
         attributes: { exclude: ['id'],
         } },
       ],
-    }) as IMatch[];
+    }) as ITeamsMatch[];
 
     return result;
   }
