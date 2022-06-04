@@ -1,5 +1,5 @@
-import IError from 'src/interfaces/IError';
 import { StatusCodes } from 'http-status-codes';
+import IError from '../interfaces/IError';
 import { IMatch, ITeamsMatch } from '../interfaces/IMatch';
 import MatchModel from '../database/models/Match';
 import TeamModel from '../database/models/Team';
@@ -56,7 +56,7 @@ export default class Match {
     }
   }
 
-  static async create(match: IMatch): Promise<ITeamsMatch | IError | string> {
+  static async create(match: IMatch): Promise<IMatch | IError | void> {
     if (match.awayTeam === match.homeTeam) {
       return { status: StatusCodes.UNAUTHORIZED,
         err: 'Teams cannot be the same' };

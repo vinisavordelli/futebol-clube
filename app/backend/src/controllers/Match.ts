@@ -25,4 +25,16 @@ export default class Match {
       console.log(err);
     }
   }
+
+  static async create(req:Request, res: Response, _next: NextFunction) {
+    try {
+      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+      const result = await MatchService.create(
+        { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress },
+      );
+      return res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
