@@ -67,10 +67,9 @@ export default class Match {
 
       const response = await MatchService.updateMatch(homeTeamGoals, awayTeamGoals, Number(id));
 
-      return res.status(StatusCodes.OK).json({ message:response });
+      return res.status(StatusCodes.OK).json({ message: response });
     } catch (error) {
       console.log(error);
     }
   }
-}
 }
