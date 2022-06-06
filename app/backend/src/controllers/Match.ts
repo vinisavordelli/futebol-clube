@@ -56,4 +56,21 @@ export default class Match {
       console.log(err);
     }
   }
+
+  static async updateMatch(req: Request, res:Response, _next:NextFunction) {
+    try {
+      const { id } = req.params;
+      const {
+        homeTeamGoals,
+        awayTeamGoals,
+      } = req.body;
+
+      const response = await MatchService.updateMatch(homeTeamGoals, awayTeamGoals, Number(id));
+
+      return res.status(StatusCodes.OK).json({ message:response });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 }
