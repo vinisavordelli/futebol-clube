@@ -72,4 +72,9 @@ export default class Match {
     await MatchModel.update({ inProgress: false }, { where: { id } });
     return { message: 'Finished' };
   }
+
+  static async updateMatch(homeTeamGoals:number, awayTeamGoals:number, id:number): Promise<string> {
+    await MatchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return 'Updated';
+  }
 }
