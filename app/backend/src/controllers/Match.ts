@@ -32,6 +32,25 @@ export default class Match {
       const result = await MatchService.create(
         { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress },
       );
+      if (result === 401) {
+        return res.status(401)
+          .json({ message: 'It is not possible to create a match with two equal teams' });
+      }
+      if (result === 404) {
+        return res.status(404).json(
+          { message: 'There is no team with such id!' },
+        );
+      }
+      return res.status(StatusCodes.CREATED).json(result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  static async finishMatch(req:Request, res: Response, _next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const result = await MatchService.finishMatch(id);
       return res.status(StatusCodes.OK).json(result);
     } catch (err) {
       console.log(err);

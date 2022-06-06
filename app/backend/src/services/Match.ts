@@ -1,5 +1,3 @@
-import { StatusCodes } from 'http-status-codes';
-import IError from '../interfaces/IError';
 import { IMatch, ITeamsMatch } from '../interfaces/IMatch';
 import MatchModel from '../database/models/Match';
 import TeamModel from '../database/models/Team';
@@ -56,23 +54,22 @@ export default class Match {
     }
   }
 
-  static async create(match: IMatch): Promise<IMatch | IError | void> {
-    if (match.awayTeam === match.homeTeam) {
-      return { status: StatusCodes.UNAUTHORIZED,
-        err: 'Teams cannot be the same' };
-    }
+  static async create(match: IMatch): Promise<IMatch | number | void> {
+    if (match.awayTeam === match.homeTeam) return 401;
     try {
       const checkTeams = await Promise.all([
         await TeamModel.findByPk(match.awayTeam),
         await TeamModel.findByPk(match.homeTeam),
       ]);
-      if (checkTeams.some((team) => team === null)) {
-        return {
-          status: StatusCodes.NOT_FOUND,
-          err: 'There is no team with such id!' };
-      }
+      if (checkTeams.some((team) => team === null)) return 404;
+
       const newMatch = await MatchModel.create(match);
       return newMatch;
     } catch (err) { console.log(err); }
+  }
+
+  static async finishMatch(id: number | string): Promise<object> {
+    await MatchModel.update({ inProgress: false }, { where: { id } });
+    return { message: 'Finished' };
   }
 }

@@ -1,4 +1,5 @@
 export default interface IError {
-  status: number;
-  err: string;
+  err: {
+    status: number;
+    message: string; }
 }
