@@ -89,7 +89,7 @@ describe('ENDPOINT /login (POST)', () => {
       response = await chai.request(app).post('/login').send(bodyRequest);
       const { message } = response.body;
 
-      expect(response.status).to.be.equal(401);
+      expect(response.status).to.be.equal(400);
       expect(message).to.be.equal("All fields must be filled");
     });
 
@@ -98,7 +98,7 @@ describe('ENDPOINT /login (POST)', () => {
       response = await chai.request(app).post('/login').send(bodyRequest);
       const { message } = response.body;
 
-      expect(response.status).to.be.equal(401);
+      expect(response.status).to.be.equal(400);
       expect(message).to.be.equal("All fields must be filled");
     });
   });
@@ -121,5 +121,11 @@ describe('ENDPOINT /login/validate (GET)', () => {
       .get('/login/validate').set('Authorization', authorization);
     expect(response.body).to.be.equal('admin');
     expect(response.status).to.be.equal(200);
+  });
+  it('O token é inválido e retorna invalid token', async () => {
+    response = await chai.request(app)
+      .get('/login/validate').set('Authorization', '');
+    expect(response.body).to.be.equal({message: 'Invalid token'});
+    expect(response.status).to.be.equal(401);
   });
 });

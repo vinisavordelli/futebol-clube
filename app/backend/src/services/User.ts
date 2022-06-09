@@ -25,17 +25,11 @@ export default class UserService {
 
   static async validate(authorization: string): Promise<IUser | null | any> {
     if (!authorization) return null;
-    try {
-      const verifiedToken = jwt
-        .verify(authorization, fs.readFileSync('jwt.evaluation.key', 'utf8')) as IUser;
-      console.log(verifiedToken);
-
-      const user = await User.findOne({ where: { id: verifiedToken.id } });
-      if (!user) return null;
-      const { role } = user;
-      return role;
-    } catch (err) {
-      console.log(err);
-    }
+    const verifiedToken = jwt
+      .verify(authorization, fs.readFileSync('jwt.evaluation.key', 'utf8')) as IUser;
+    const user = await User.findOne({ where: { id: verifiedToken.id } });
+    if (!user) return null;
+    const { role } = user;
+    return role;
   }
 }

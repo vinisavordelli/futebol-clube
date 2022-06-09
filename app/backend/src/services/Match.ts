@@ -4,25 +4,21 @@ import TeamModel from '../database/models/Team';
 
 export default class Match {
   static async getAll(): Promise<ITeamsMatch[] | undefined> {
-    try {
-      const result = await MatchModel.findAll({
-        include: [{
-          model: TeamModel,
-          as: 'teamHome',
-          attributes: { exclude: ['id'],
-          } },
-        {
-          model: TeamModel,
-          as: 'teamAway',
-          attributes: { exclude: ['id'],
-          } },
-        ],
-      }) as ITeamsMatch[];
+    const result = await MatchModel.findAll({
+      include: [{
+        model: TeamModel,
+        as: 'teamHome',
+        attributes: { exclude: ['id'],
+        } },
+      {
+        model: TeamModel,
+        as: 'teamAway',
+        attributes: { exclude: ['id'],
+        } },
+      ],
+    }) as ITeamsMatch[];
 
-      return result;
-    } catch (err) {
-      console.log(err);
-    }
+    return result;
   }
 
   static async filterByProgress(progress:boolean):Promise<ITeamsMatch[] | undefined> {
@@ -46,26 +42,20 @@ export default class Match {
   }
 
   static async getById(id: number | string) {
-    try {
-      const result = await MatchModel.findByPk(id);
-      return result;
-    } catch (err) {
-      console.log(err);
-    }
+    const result = await MatchModel.findByPk(id);
+    return result;
   }
 
   static async create(match: IMatch): Promise<IMatch | number | void> {
     if (match.awayTeam === match.homeTeam) return 401;
-    try {
-      const checkTeams = await Promise.all([
-        await TeamModel.findByPk(match.awayTeam),
-        await TeamModel.findByPk(match.homeTeam),
-      ]);
-      if (checkTeams.some((team) => team === null)) return 404;
+    const checkTeams = await Promise.all([
+      await TeamModel.findByPk(match.awayTeam),
+      await TeamModel.findByPk(match.homeTeam),
+    ]);
+    if (checkTeams.some((team) => team === null)) return 404;
 
-      const newMatch = await MatchModel.create(match);
-      return newMatch;
-    } catch (err) { console.log(err); }
+    const newMatch = await MatchModel.create(match);
+    return newMatch;
   }
 
   static async finishMatch(id: number | string): Promise<object> {
