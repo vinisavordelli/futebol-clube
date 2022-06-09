@@ -8,7 +8,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import User from '../database/models/User';
-import { userFindOneMock } from './mocks/users';
+import { userFindOneMock, tokenAuth } from './mocks/users';
 
 import { Response } from 'superagent';
 
@@ -101,5 +101,25 @@ describe('ENDPOINT /login (POST)', () => {
       expect(response.status).to.be.equal(401);
       expect(message).to.be.equal("All fields must be filled");
     });
+  });
+});
+
+describe('ENDPOINT /login/validate (GET)', () => {
+  let response: Response;
+  const authorization = tokenAuth;
+
+  before(async () => {
+    sinon.stub(User, "findOne").resolves(userFindOneMock as User);
+  })
+  
+  after(async () => {
+    (User.findOne as sinon.SinonStub).restore();
+  })
+
+  it('O token é válido e retorna o role do usuário', async () => {
+    response = await chai.request(app)
+      .get('/login/validate').set('Authorization', authorization);
+    expect(response.body).to.be.equal('admin');
+    expect(response.status).to.be.equal(200);
   });
 });
