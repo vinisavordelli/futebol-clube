@@ -9,6 +9,7 @@ export default class Match {
       let result;
       if (inProgress) {
         result = await MatchService.filterByProgress(inProgress === 'true');
+        return res.status(StatusCodes.OK).json(result);
       }
       result = await MatchService.getAll();
       return res.status(StatusCodes.OK).json(result);
