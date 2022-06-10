@@ -1,7 +1,7 @@
 import ITeam from '../interfaces/ITeam';
 import Team from '../database/models/Team';
 import Matches from '../database/models/Match';
-import calculateTotals from '../helpers/LeaderBoardFunctions';
+import calculateTotals, { sortLeaderBoard } from '../helpers/LeaderBoardFunctions';
 
 export default class LeaderBoard {
   static async getAll(url: string) {
@@ -17,6 +17,7 @@ export default class LeaderBoard {
       }
       return calculateTotals(homeM, awayM, team.teamName);
     });
-    return Promise.all(matches);
+    const result = await Promise.all(matches);
+    return sortLeaderBoard(result);
   }
 }

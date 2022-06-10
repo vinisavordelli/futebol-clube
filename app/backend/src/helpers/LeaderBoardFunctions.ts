@@ -56,6 +56,12 @@ const buildStats = (homeStats: ILeaderboard, awayStats: ILeaderboard) => {
   return stats;
 };
 
+export const sortLeaderBoard = (stats: ILeaderboard[]) => stats.sort((a, b) =>
+  b.totalPoints - a.totalPoints
+  || b.goalsBalance - a.goalsBalance
+  || b.goalsFavor - a.goalsFavor
+  || a.goalsOwn - b.goalsOwn);
+
 const calculateTotals = (homeMatches: IMatch[], awayMatches: IMatch[], name: string) => {
   const homeStats = calculateHome(homeMatches);
   const awayStats = calculateAway(awayMatches);
@@ -64,7 +70,7 @@ const calculateTotals = (homeMatches: IMatch[], awayMatches: IMatch[], name: str
   stats.totalGames = (homeMatches.length + awayMatches.length);
   stats.efficiency = Number(((stats.totalPoints
    / (((stats.totalVictories + stats.totalDraws + stats.totalLosses) * 3))) * 100).toFixed(2));
-  return stats as ILeaderboard;
+  return stats;
 };
 
 export default calculateTotals;
