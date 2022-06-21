@@ -11,8 +11,6 @@ import Match from '../database/models/Match';
 import { matchCreate, matchInProgressFalse, matchInProgressTrue, matchFindAll, matchesInDB } from './mocks/matches';
 
 import { Response } from 'superagent';
-import { ITeamsMatch } from '../interfaces/IMatch';
-import { finished } from 'stream';
 
 chai.use(chaiHttp);
 
