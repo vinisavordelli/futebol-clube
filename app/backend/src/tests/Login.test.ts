@@ -111,9 +111,6 @@ describe('ENDPOINT /login/validate (GET)', () => {
 
   before(async () => {
     sinon.stub(User, "findOne").resolves(userFindOneMock as User);
-    loginResponse = await chai.request(app).post('/login').send({
-      email: "admin@admin.com",
-      password: "secret_admin"});
   })
   
   after(async () => {
@@ -121,13 +118,22 @@ describe('ENDPOINT /login/validate (GET)', () => {
   })
 
   it('O token é válido e retorna o role do usuário', async () => {
-    const { token } = loginResponse.body;
+    response = await chai
+    .request(app)
+    .post('/login')
+    .send({
+     "email": "admin@admin.com",
+     "password": "secret_admin"
+   })
 
-    response = await chai.request(app)
-      .get('/login/validate').set('Authorization', authorization);
+ response = await chai
+   .request(app)
+   .get('/login/validate')
+   .set('Authorization', response.body.token)
     expect(response.body).to.be.equal('admin');
     expect(response.status).to.be.equal(200);
   });
+  
   it('O token é inválido e retorna invalid token', async () => {
     response = await chai.request(app)
       .get('/login/validate').set('Authorization', '');
